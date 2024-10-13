@@ -1,0 +1,66 @@
+// Copyright 2024 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// TODO(crbug.com/343126579): Add link to spec/explainer.
+enum AIModelAvailability {
+  "readily",
+  "after-download",
+  "no"
+};
+
+[
+  Exposed=Window,
+  RuntimeEnabled=ModelExecutionAPI
+]
+interface AI {
+  [
+    Measure,
+    CallWith=ScriptState,
+    RaisesException
+  ]
+  Promise<AIModelAvailability> canCreateTextSession();
+  // TODO(crbug.com/341851444): Remove after confirming there is no usage.
+  [
+    Measure,
+    ImplementedAs=canCreateTextSession,
+    CallWith=ScriptState,
+    RaisesException,
+    DeprecateAs=DeprecatedAICanCreateGenericSession
+  ]
+  Promise<AIModelAvailability> canCreateGenericSession();
+  [
+    Measure,
+    CallWith=ScriptState,
+    RaisesException
+  ]
+  Promise<AITextSession> createTextSession(
+    optional AITextSessionOptions options = {}
+  );
+  // TODO(crbug.com/341851444): Remove after confirming there is no usage.
+  [
+    Measure,
+    ImplementedAs=createTextSession,
+    CallWith=ScriptState,
+    RaisesException,
+    DeprecateAs=DeprecatedAICreateGenericSession
+  ]
+  Promise<AITextSession> createGenericSession(
+    optional AITextSessionOptions options = {}
+  );
+  [
+    Measure,
+    CallWith=ScriptState,
+    RaisesException
+  ]
+  Promise<AITextSessionOptions> defaultTextSessionOptions();
+  // TODO(crbug.com/341851444): Remove after confirming there is no usage.
+  [
+    Measure,
+    ImplementedAs=defaultTextSessionOptions,
+    CallWith=ScriptState,
+    RaisesException,
+    DeprecateAs=DeprecatedAIDefaultGenericSessionOptions
+  ]
+  Promise<AITextSessionOptions> defaultGenericSessionOptions();
+};
